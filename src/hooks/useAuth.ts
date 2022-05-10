@@ -1,3 +1,4 @@
+import { useMessage } from 'hooks/useMessage';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
@@ -5,7 +6,7 @@ import { User } from 'types/api/User';
 
 export const useAuth = () => {
   const navigate = useNavigate();
-
+  const { showMessage } = useMessage();
   const [loading, setLoading] = useState(false);
 
   const login = useCallback(
@@ -13,26 +14,21 @@ export const useAuth = () => {
       setLoading(true);
       const idIsValid = id[0] !== ' ';
       axios
-        .get<User | Array<User>>('https://jsonplaceholder.typicode.com/users', {
-          params: {
-            id: id
-          }
-        })
+        .get<User | Array<User>>(`https://jsonplaceholder.typicode.com/users/${id}`)
         .then((res) => {
           if (res.data && idIsValid) {
-            console.log(res);
+            showMessage({ title: 'ログインしました', status: 'success' });
             navigate('/home');
           } else {
-            alert('ユーザーが見つかりません');
+            showMessage({ title: 'ユーザーが見つかりません', status: 'error' });
           }
         })
         .catch((error) => {
-          console.error(error);
-          alert('ログインできません');
+          showMessage({ title: 'ログインできません', status: 'error' });
         })
         .finally(() => setLoading(false));
     },
-    [navigate]
+    [navigate, showMessage]
   );
   return { login, loading };
 };
