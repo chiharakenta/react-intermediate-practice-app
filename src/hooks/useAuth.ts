@@ -12,11 +12,11 @@ export const useAuth = () => {
   const login = useCallback(
     (id: string) => {
       setLoading(true);
-      const idIsValid = id[0] !== ' ';
       axios
-        .get<User | Array<User>>(`https://jsonplaceholder.typicode.com/users/${id}`)
+        .get<User>(`https://jsonplaceholder.typicode.com/users/`, { params: { id: id } })
         .then((res) => {
-          if (res.data && idIsValid) {
+          const userIsEmpty = !Object.keys(res.data).length;
+          if (!userIsEmpty) {
             showMessage({ title: 'ログインしました', status: 'success' });
             navigate('/home');
           } else {
