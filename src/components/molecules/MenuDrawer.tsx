@@ -1,5 +1,6 @@
 import { Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from '@chakra-ui/react';
 import { FC, memo } from 'react';
+import { Link } from 'react-router-dom';
 
 type Props = {
   isOpen: boolean;
@@ -14,15 +15,21 @@ export const MenuDrawer: FC<Props> = memo((props) => {
       <DrawerOverlay>
         <DrawerContent>
           <DrawerBody p={0} bg="grey.100">
-            <Button w="100%" bg="grey.100">
-              トップ
-            </Button>
-            <Button w="100%" bg="grey.100">
-              ユーザー一覧
-            </Button>
-            <Button w="100%" bg="grey.100">
-              設定
-            </Button>
+            <Link to="/home">
+              <Button onClick={onClose} w="100%" bg="grey.100">
+                トップ
+              </Button>
+            </Link>
+            <Link to="/home/user_management">
+              <Button onClick={onClose} w="100%" bg="grey.100">
+                ユーザー一覧
+              </Button>
+            </Link>
+            <Link to="/home/setting">
+              <Button onClick={onClose} w="100%" bg="grey.100">
+                設定
+              </Button>
+            </Link>
           </DrawerBody>
         </DrawerContent>
       </DrawerOverlay>
