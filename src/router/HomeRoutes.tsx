@@ -1,9 +1,9 @@
 import { Home } from 'components/pages/Home';
 import { Setting } from 'components/pages/Setting';
 import { UserManagement } from 'components/pages/UserManagement';
-import { Routes } from 'types/Routes';
 
 // type
+import { Routes } from 'types/Routes';
 
 export const homeRoutes: Routes = {
   path: `/home`,
