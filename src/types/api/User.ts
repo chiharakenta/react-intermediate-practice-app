@@ -13,4 +13,5 @@ export type User = {
       lng: number;
     };
   };
+  phone: string;
 };
