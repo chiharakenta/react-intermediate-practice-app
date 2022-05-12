@@ -20,7 +20,8 @@ export const useAuth = () => {
           const userIsEmpty = !Object.keys(res.data).length;
           if (!userIsEmpty) {
             const user = res.data[0];
-            setLoginUser(user);
+            const isAdmin = user.id === 10;
+            setLoginUser({ ...user, isAdmin });
             showMessage({ title: 'ログインしました', status: 'success' });
             navigate('/home');
           } else {
