@@ -1,11 +1,15 @@
 import { Box, Flex, Heading, useDisclosure } from '@chakra-ui/react';
-import { FC, memo } from 'react';
+import { FC, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { MenuIconButton } from 'components/atoms/button/MenuIconButton';
 import { MenuDrawer } from 'components/molecules/MenuDrawer';
+import { useLoginUser } from 'hooks/useLoginUser';
 
 export const Header: FC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { setLoginUser } = useLoginUser();
+
+  const onClickLogout = useCallback(() => setLoginUser(null), [setLoginUser]);
 
   return (
     <>
@@ -18,14 +22,21 @@ export const Header: FC = memo(() => {
           </Link>
         </Flex>
         <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: 'none', md: 'flex' }}>
-          <Box pr={4}>
+          <Box pr={2}>
             <Link to="/home/user_management">ユーザー一覧</Link>
           </Box>
-          <Link to="/home/setting">設定</Link>
+          <Box pr={2}>
+            <Link to="/home/setting">設定</Link>
+          </Box>
+          <Box pr={2}>
+            <Link to="/" onClick={onClickLogout}>
+              ログアウト
+            </Link>
+          </Box>
         </Flex>
         <MenuIconButton onOpen={onOpen} />
       </Flex>
-      <MenuDrawer isOpen={isOpen} onClose={onClose} />
+      <MenuDrawer isOpen={isOpen} onClose={onClose} onClickLogout={onClickLogout} />
     </>
   );
 });

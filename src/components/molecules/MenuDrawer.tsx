@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onClickLogout: () => void;
 };
 
 export const MenuDrawer: FC<Props> = memo((props) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, onClickLogout } = props;
 
   return (
     <Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
@@ -28,6 +29,11 @@ export const MenuDrawer: FC<Props> = memo((props) => {
             <Link to="/home/setting">
               <Button onClick={onClose} w="100%" bg="grey.100">
                 設定
+              </Button>
+            </Link>
+            <Link to="/">
+              <Button onClick={onClickLogout} w="100%" bg="grey.100">
+                ログアウト
               </Button>
             </Link>
           </DrawerBody>
