@@ -21,15 +21,14 @@ export const useAllUsers = () => {
     axios
       .get<Array<User>>('https://jsonplaceholder.typicode.com/users')
       .then((res) => setUsers(res.data))
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         showMessage({ title: 'ユーザー取得に失敗しました', status: 'error' });
       })
       .finally(() => setLoading(false));
   }, [showMessage]);
 
-  const updateUser = (props: Props, users: Array<User>) => {
-    const newUsers = [...users];
+  const updateUser = (props: Props, oldUsers: Array<User>) => {
+    const newUsers = [...oldUsers];
     const { id, username, name, email, phone } = props;
     const index = id - 1;
     newUsers[index].username = username;
