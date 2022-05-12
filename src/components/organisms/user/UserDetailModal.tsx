@@ -12,24 +12,30 @@ import {
   Stack
 } from '@chakra-ui/react';
 import { PrimaryButton } from 'components/atoms/button/PrimaryButton';
+import { useAllUsers } from 'hooks/useAllUsers';
 import { ChangeEventHandler, FC, memo, useEffect, useState } from 'react';
 import { User } from 'types/api/User';
 
 type Props = {
   user: User | null;
+  users: Array<User>;
   isAdmin?: boolean;
   isOpen: boolean;
   onClose: () => void;
 };
 
 export const UserDetailModal: FC<Props> = memo((props) => {
-  const { user, isAdmin = false, isOpen, onClose } = props;
+  const { user, users, isAdmin = false, isOpen, onClose } = props;
+  const { updateUser } = useAllUsers();
+
+  const [id, setId] = useState<number | null>(null);
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
   useEffect(() => {
+    setId(user?.id ?? null);
     setUsername(user?.username ?? '');
     setName(user?.name ?? '');
     setEmail(user?.email ?? '');
@@ -40,6 +46,14 @@ export const UserDetailModal: FC<Props> = memo((props) => {
   const onChangeName: ChangeEventHandler<HTMLInputElement> = (event) => setName(event.target.value);
   const onChangeEmail: ChangeEventHandler<HTMLInputElement> = (event) => setEmail(event.target.value);
   const onChangePhone: ChangeEventHandler<HTMLInputElement> = (event) => setPhone(event.target.value);
+
+  const onClickUpdate = () => {
+    if (typeof id !== 'number') {
+      console.error('id is null');
+      return;
+    }
+    updateUser({ id, username, name, email, phone }, users);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} autoFocus={false}>
@@ -69,7 +83,7 @@ export const UserDetailModal: FC<Props> = memo((props) => {
         </ModalBody>
         {isAdmin && (
           <ModalFooter>
-            <PrimaryButton onClick={() => console.log('click')}>更新</PrimaryButton>
+            <PrimaryButton onClick={onClickUpdate}>更新</PrimaryButton>
           </ModalFooter>
         )}
       </ModalContent>

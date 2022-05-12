@@ -2,6 +2,15 @@ import axios from 'axios';
 import { useState, useCallback } from 'react';
 import { User } from 'types/api/User';
 import { useMessage } from 'hooks/useMessage';
+
+type Props = {
+  id: number;
+  username: string;
+  name: string;
+  email: string;
+  phone: string;
+};
+
 export const useAllUsers = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<Array<User>>([]);
@@ -18,5 +27,17 @@ export const useAllUsers = () => {
       })
       .finally(() => setLoading(false));
   }, [showMessage]);
-  return { getUsers, loading, users };
+
+  const updateUser = (props: Props, users: Array<User>) => {
+    const newUsers = [...users];
+    const { id, username, name, email, phone } = props;
+    const index = id - 1;
+    newUsers[index].username = username;
+    newUsers[index].name = name;
+    newUsers[index].email = email;
+    newUsers[index].phone = phone;
+    setUsers(newUsers);
+  };
+
+  return { getUsers, updateUser, loading, users };
 };
