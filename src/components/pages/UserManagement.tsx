@@ -11,7 +11,6 @@ export const UserManagement: FC = memo(() => {
   const { getUsers, loading, users } = useAllUsers();
   const { onSelectUser, selectedUser } = useSelectUser();
   const { loginUser } = useLoginUser();
-  console.log(loginUser);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getUsers(), []);
@@ -45,7 +44,7 @@ export const UserManagement: FC = memo(() => {
           ))}
         </Wrap>
       )}
-      <UserDetailModal isOpen={isOpen} onClose={onClose} user={selectedUser} />
+      <UserDetailModal isOpen={isOpen} onClose={onClose} isAdmin={loginUser?.isAdmin} user={selectedUser} />
     </>
   );
 });
